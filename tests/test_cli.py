@@ -352,3 +352,4 @@ class TestArgumentParsing:
                     mock_manager.list_test_points_for_plan.return_value = {}
                     result = main()
                     assert result in [0, 1]  # Should not crash
+                    

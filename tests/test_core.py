@@ -374,3 +374,4 @@ class TestConfiguration:
             # Should work with defaults
             manager = AzureTestPointManager()
             assert manager.personal_access_token == "token"
+            
