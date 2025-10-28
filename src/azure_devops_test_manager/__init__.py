@@ -41,3 +41,4 @@ from .core import AzureTestPointManager
 from .cli import main as cli_main
 
 __all__ = ["__version__", "AzureTestPointManager", "cli_main"]
+

@@ -39,7 +39,6 @@ jobs:
       - name: Format check with black
         run: |
           black --check --exclude "_version\.py|generated" --diff src/ tests/
-          # black --check --diff src/ tests/
 
       - name: Type check with mypy
         run: |
