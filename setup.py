@@ -34,8 +34,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -50,7 +48,7 @@ setup(
         "fuzzywuzzy>=0.18.0",
         "python-Levenshtein>=0.12.0",
         "azure-devops>=7.1.0b4",
-        "azure-core==1.36.0"
+        "azure-core==1.36.0",
     ],
     extras_require={
         "dev": [

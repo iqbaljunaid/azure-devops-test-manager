@@ -12,13 +12,13 @@ This package provides functionality to:
 
 Example Usage:
     from azure_devops_test_manager import AzureTestPointManager
-    
+
     # Create manager instance
     manager = AzureTestPointManager()
-    
+
     # List test points
     points = manager.list_test_points_for_plan(plan_id=12345)
-    
+
     # Update from XML results
     manager.update_from_test_results(
         plan_id=12345,
@@ -40,8 +40,4 @@ except ImportError:
 from .core import AzureTestPointManager
 from .cli import main as cli_main
 
-__all__ = [
-    "__version__",
-    "AzureTestPointManager", 
-    "cli_main"
-]
+__all__ = ["__version__", "AzureTestPointManager", "cli_main"]
