@@ -27,3 +27,4 @@ def test_version_available():
     except ImportError:
         # Expected during development before package installation
         pass
+    
