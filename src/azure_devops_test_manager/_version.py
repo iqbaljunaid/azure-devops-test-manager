@@ -1,14 +1,23 @@
 import subprocess
 import re
 
+
 def get_git_version():
     try:
         # Get the latest tag description from git
-        version_str = subprocess.check_output(['git', 'describe', '--tags', '--long'], stderr=subprocess.DEVNULL).decode().strip()
+        version_str = (
+            subprocess.check_output(
+                ["git", "describe", "--tags", "--long"], stderr=subprocess.DEVNULL
+            )
+            .decode()
+            .strip()
+        )
         # Example format: 1.0.2-dev5-0-g375d8e585 or 1.0.2-5-g375d8e585
-        match = re.match(r'(\d+\.\d+\.\d+)(?:-(dev)?(\d+))?-(\d+)-g([0-9a-f]+)', version_str)
+        match = re.match(
+            r"(\d+\.\d+\.\d+)(?:-(dev)?(\d+))?-(\d+)-g([0-9a-f]+)", version_str
+        )
         if match:
-            major, minor, patch = map(int, match.group(1).split('.'))
+            major, minor, patch = map(int, match.group(1).split("."))
             dev_label = f"dev{match.group(3)}" if match.group(3) else None
             commit_id = f"g{match.group(5)}"
             version_parts = [major, minor, patch]
@@ -25,6 +34,7 @@ def get_git_version():
         pass
     # Fallback default version
     return "0.0.0+unknown", (0, 0, 0, "unknown"), "unknown"
+
 
 # Get version info from git
 __version__, __version_tuple__, __commit_id__ = get_git_version()
