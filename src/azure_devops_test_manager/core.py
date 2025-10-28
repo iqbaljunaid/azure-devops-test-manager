@@ -58,11 +58,11 @@ class AzureTestPointManager:
         )
         self.organization_url = (
             organization_url 
-            or os.getenv('AZURE_DEVOPS_ORG', 'https://kognifai.visualstudio.com')
+            or os.getenv('AZURE_DEVOPS_ORG', 'https://azure-devops.visualstudio.com')
         )
         self.project_name = (
             project_name 
-            or os.getenv('AZURE_DEVOPS_PROJECT', 'KM Commercial Marine')
+            or os.getenv('AZURE_DEVOPS_PROJECT', 'Project_NAME')
         )
         self.api_version = api_version
         

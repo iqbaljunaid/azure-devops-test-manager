@@ -1,5 +1,7 @@
 # Azure DevOps Test Manager
 
+[![CI](https://github.com/iqbaljunaid/azure-devops-test-manager/workflows/CI/badge.svg)](https://github.com/iqbaljunaid/azure-devops-test-manager/actions/workflows/ci.yml)
+[![Build and Publish](https://github.com/iqbaljunaid/azure-devops-test-manager/workflows/Build%20and%20Publish%20to%20PyPI/badge.svg)](https://github.com/iqbaljunaid/azure-devops-test-manager/actions/workflows/publish.yml)
 [![PyPI version](https://badge.fury.io/py/azure-devops-test-manager.svg)](https://badge.fury.io/py/azure-devops-test-manager)
 [![Python Support](https://img.shields.io/pypi/pyversions/azure-devops-test-manager.svg)](https://pypi.org/project/azure-devops-test-manager/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
