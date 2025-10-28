@@ -27,8 +27,8 @@ Example Usage:
 
 Environment Variables:
     AZURE_DEVOPS_PAT: Your Azure DevOps Personal Access Token (required)
-    AZURE_DEVOPS_ORG: Organization URL (default: https://kognifai.visualstudio.com)
-    AZURE_DEVOPS_PROJECT: Project name (default: KM Commercial Marine)
+    AZURE_DEVOPS_ORG: Organization URL (default: https://azure-devops.visualstudio.com)
+    AZURE_DEVOPS_PROJECT: Project name (default: Project_NAME)
 """
 
 try:

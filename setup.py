@@ -15,15 +15,15 @@ setup(
     use_scm_version=True,
     setup_requires=["setuptools_scm"],
     author="Azure DevOps Test Manager Team",
-    author_email="dev@example.com",
+    author_email="junaid.iqbal74@gmail.com",
     description="A comprehensive tool for managing Azure DevOps test points with XML integration and fuzzy matching",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/azure-devops-test-manager",
+    url="https://github.com/iqbaljunaid/azure-devops-test-manager",
     project_urls={
-        "Bug Tracker": "https://github.com/yourusername/azure-devops-test-manager/issues",
+        "Bug Tracker": "https://github.com/iqbaljunaid/azure-devops-test-manager/issues",
         "Documentation": "https://azure-devops-test-manager.readthedocs.io/",
-        "Source Code": "https://github.com/yourusername/azure-devops-test-manager",
+        "Source Code": "https://github.com/iqbaljunaid/azure-devops-test-manager",
     },
     package_dir={"": "src"},
     packages=find_packages(where="src"),
@@ -49,6 +49,8 @@ setup(
         "beautifulsoup4>=4.11.0",
         "fuzzywuzzy>=0.18.0",
         "python-Levenshtein>=0.12.0",
+        "azure-devops>=7.1.0b4",
+        "azure-core==1.36.0"
     ],
     extras_require={
         "dev": [
@@ -70,8 +72,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "azure-devops-test-manager=azure_devops_test_manager.cli:main",
-            "ado-test-manager=azure_devops_test_manager.cli:main",
+            "azure-devops-test-manager=azure_devops_test_manager.cli:main"
         ],
     },
     include_package_data=True,

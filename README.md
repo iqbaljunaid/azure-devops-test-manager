@@ -28,7 +28,7 @@ pip install azure-devops-test-manager
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/azure-devops-test-manager.git
+git clone https://github.com/iqbaljunaid/azure-devops-test-manager.git
 cd azure-devops-test-manager
 pip install -e .
 ```
@@ -36,7 +36,7 @@ pip install -e .
 ### Development Installation
 
 ```bash
-git clone https://github.com/yourusername/azure-devops-test-manager.git
+git clone https://github.com/iqbaljunaid/azure-devops-test-manager.git
 cd azure-devops-test-manager
 pip install -e ".[dev]"
 ```
@@ -174,8 +174,8 @@ The tool supports configuration through environment variables:
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `AZURE_DEVOPS_PAT` | Personal Access Token (Required) | None |
-| `AZURE_DEVOPS_ORG` | Organization URL | `https://kognifai.visualstudio.com` |
-| `AZURE_DEVOPS_PROJECT` | Project Name | `KM Commercial Marine` |
+| `AZURE_DEVOPS_ORG` | Organization URL | `https://azure-devops.visualstudio.com` |
+| `AZURE_DEVOPS_PROJECT` | Project Name | `Project_NAME` |
 
 ### Required Permissions
 

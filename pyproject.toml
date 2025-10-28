@@ -8,10 +8,10 @@ description = "A comprehensive tool for managing Azure DevOps test points with X
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Azure DevOps Test Manager Team", email = "dev@example.com"},
+    {name = "Azure DevOps Test Manager Team", email = "junaid.iqbal74@gmail.com"},
 ]
 maintainers = [
-    {name = "Azure DevOps Test Manager Team", email = "dev@example.com"},
+    {name = "Azure DevOps Test Manager Team", email = "junaid.iqbal74@gmail.com"},
 ]
 keywords = ["azure-devops", "testing", "test-management", "automation", "xml", "junit", "pytest"]
 classifiers = [
