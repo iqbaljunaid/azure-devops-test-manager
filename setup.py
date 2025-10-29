@@ -41,14 +41,14 @@ setup(
         "Topic :: Software Development :: Quality Assurance",
         "Topic :: Utilities",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     install_requires=[
         "requests>=2.28.0",
         "beautifulsoup4>=4.11.0",
         "fuzzywuzzy>=0.18.0",
         "python-Levenshtein>=0.12.0",
         "azure-devops>=7.1.0b4",
-        "azure-core==1.36.0",
+        "azure-core>=1.33.0",
     ],
     extras_require={
         "dev": [

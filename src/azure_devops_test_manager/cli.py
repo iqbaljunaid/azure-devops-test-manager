@@ -13,6 +13,15 @@ from typing import Optional, Dict, Any
 
 from .core import AzureTestPointManager, ConfigurationError, AzureAPIError
 
+# Import version - handle cases where it might not be available
+try:
+    from ._version import version as __version__
+except ImportError:
+    try:
+        from . import __version__
+    except ImportError:
+        __version__ = "unknown"
+
 
 def print_console_output(
     all_test_points: Dict[int, Dict[str, Any]], detailed: bool = False
@@ -309,6 +318,15 @@ Examples:
   azure-devops-test-manager 679333 --from-xml test-results.xml --dry-run      # Preview XML updates
   azure-devops-test-manager 679333 --from-xml test-results.xml               # Update from XML
         """,
+    )
+
+    # Add version argument
+    parser.add_argument(
+        "--version",
+        "-v",
+        action="version",
+        version=f"azure-devops-test-manager {__version__}",
+        help="Show program's version number and exit",
     )
 
     parser.add_argument("plan_id", type=int, nargs="?", help="Test plan ID")
