@@ -41,6 +41,7 @@ jobs:
 
       - name: Type check with mypy
         run: |
+          mypy --install-types
           mypy src/ --ignore-missing-imports
 
       - name: Test with pytest
