@@ -48,7 +48,7 @@ setup(
         "fuzzywuzzy>=0.18.0",
         "python-Levenshtein>=0.12.0",
         "azure-devops>=7.1.0b4",
-        "azure-core==1.36.0",
+        "azure-core>=1.33.0",
     ],
     extras_require={
         "dev": [
