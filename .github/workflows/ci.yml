@@ -48,7 +48,7 @@ jobs:
           python -m pytest tests/ -v --cov=azure_devops_test_manager --cov-report=xml --cov-report=term-missing
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         if: matrix.python-version == '3.10'
         with:
           file: ./coverage.xml
