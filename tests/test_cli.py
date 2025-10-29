@@ -123,15 +123,24 @@ class TestCLI:
         """Test error when plan_id is not provided."""
         from azure_devops_test_manager.cli import main
 
-        with patch("sys.argv", ["azure-devops-test-manager"]):
-            with patch("builtins.print") as mock_print:
-                result = main()
+        # Mock environment variables to avoid configuration error
+        with patch.dict(
+            os.environ,
+            {
+                "AZURE_DEVOPS_PAT": "test_token",
+                "AZURE_DEVOPS_ORG": "https://test.visualstudio.com",
+                "AZURE_DEVOPS_PROJECT": "Test Project",
+            },
+        ):
+            with patch("sys.argv", ["azure-devops-test-manager"]):
+                with patch("builtins.print") as mock_print:
+                    result = main()
 
-                assert result == 1
-                # Verify error message was printed
-                print_calls = [call[0][0] for call in mock_print.call_args_list]
-                error_output = "\n".join(print_calls)
-                assert "plan_id is required" in error_output
+                    assert result == 1
+                    # Verify error message was printed
+                    print_calls = [call[0][0] for call in mock_print.call_args_list]
+                    error_output = "\n".join(print_calls)
+                    assert "plan_id is required" in error_output
 
     @patch("azure_devops_test_manager.cli.AzureTestPointManager")
     def test_configuration_error_handling(self, mock_manager_class: Any) -> None:
