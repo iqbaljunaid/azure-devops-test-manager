@@ -71,7 +71,7 @@ class AzureTestPointManager:
         self._validate_configuration()
 
         # Set up authentication and headers
-        self.auth = ("", self.personal_access_token)
+        self.auth = ("", self.personal_access_token or "")
         self.headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -117,7 +117,8 @@ class AzureTestPointManager:
             response.raise_for_status()
 
             data = response.json()
-            return data.get("value", [])
+            result = data.get("value", [])
+            return result if isinstance(result, list) else []
 
         except requests.exceptions.HTTPError as e:
             raise AzureAPIError(f"HTTP Error fetching test suites: {e}")
@@ -145,7 +146,8 @@ class AzureTestPointManager:
             response.raise_for_status()
 
             data = response.json()
-            return data.get("value", [])
+            result = data.get("value", [])
+            return result if isinstance(result, list) else []
 
         except requests.exceptions.HTTPError as e:
             raise AzureAPIError(
@@ -289,7 +291,7 @@ class AzureTestPointManager:
 
     def list_test_points_for_plan(
         self, plan_id: int, suite_id: Optional[int] = None, detailed: bool = False
-    ) -> Dict[str, Any]:
+    ) -> Dict[int, Dict[str, Any]]:
         """
         List all test points for a test plan.
 
@@ -386,7 +388,8 @@ class AzureTestPointManager:
             )
             response.raise_for_status()
 
-            return response.json()
+            result = response.json()
+            return result if isinstance(result, dict) else {}
 
         except requests.exceptions.HTTPError as e:
             raise AzureAPIError(f"HTTP Error updating point {point_id}: {e}")
@@ -412,7 +415,12 @@ class AzureTestPointManager:
             tree = ET.parse(xml_file_path)
             root = tree.getroot()
 
-            test_results = {"passed": [], "failed": [], "skipped": [], "error": []}
+            test_results: Dict[str, List[Dict[str, Any]]] = {
+                "passed": [],
+                "failed": [],
+                "skipped": [],
+                "error": [],
+            }
 
             # Find all testcase elements
             for testcase in root.iter("testcase"):
@@ -438,27 +446,26 @@ class AzureTestPointManager:
                 }
 
                 # Check for failure, error, or skipped elements
-                if testcase.find("failure") is not None:
-                    failure_elem = testcase.find("failure")
+                failure_elem = testcase.find("failure")
+                if failure_elem is not None:
                     test_info["failure_message"] = failure_elem.get("message", "")
                     test_info["failure_text"] = failure_elem.text or ""
                     test_results["failed"].append(test_info)
-
-                elif testcase.find("error") is not None:
-                    error_elem = testcase.find("error")
-                    test_info["error_message"] = error_elem.get("message", "")
-                    test_info["error_text"] = error_elem.text or ""
-                    test_results["error"].append(test_info)
-
-                elif testcase.find("skipped") is not None:
-                    skipped_elem = testcase.find("skipped")
-                    test_info["skip_message"] = skipped_elem.get("message", "")
-                    test_info["skip_text"] = skipped_elem.text or ""
-                    test_results["skipped"].append(test_info)
-
                 else:
-                    # No failure, error, or skipped -> passed
-                    test_results["passed"].append(test_info)
+                    error_elem = testcase.find("error")
+                    if error_elem is not None:
+                        test_info["error_message"] = error_elem.get("message", "")
+                        test_info["error_text"] = error_elem.text or ""
+                        test_results["error"].append(test_info)
+                    else:
+                        skipped_elem = testcase.find("skipped")
+                        if skipped_elem is not None:
+                            test_info["skip_message"] = skipped_elem.get("message", "")
+                            test_info["skip_text"] = skipped_elem.text or ""
+                            test_results["skipped"].append(test_info)
+                        else:
+                            # No failure, error, or skipped -> passed
+                            test_results["passed"].append(test_info)
 
             return test_results
 
@@ -470,7 +477,7 @@ class AzureTestPointManager:
     def fuzzy_match_test_names(
         self,
         test_results: Dict[str, List[Dict[str, Any]]],
-        azure_test_points: Dict[str, Any],
+        azure_test_points: Dict[int, Dict[str, Any]],
         min_score: int = 80,
     ) -> Dict[str, Any]:
         """
@@ -545,7 +552,7 @@ class AzureTestPointManager:
                     best_score = score
                     match_strategy = "token_sort"
 
-            if best_score >= min_score:
+            if best_score >= min_score and best_match is not None:
                 # Find the matching XML test
                 matched_xml_test = None
                 if match_strategy == "clean_name":
@@ -647,7 +654,7 @@ class AzureTestPointManager:
             "passed": "Passed",
         }
 
-        update_summary = {
+        update_summary: Dict[str, Any] = {
             "total_matches": len(matches),
             "total_updated": 0,
             "by_outcome": {},

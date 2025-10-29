@@ -9,12 +9,14 @@ import json
 import sys
 import csv
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict, Any
 
 from .core import AzureTestPointManager, ConfigurationError, AzureAPIError
 
 
-def print_console_output(all_test_points, detailed=False):
+def print_console_output(
+    all_test_points: Dict[int, Dict[str, Any]], detailed: bool = False
+) -> None:
     """Print formatted console output"""
     print(f"\n{'='*80}")
     print(f"TEST POINTS SUMMARY")
@@ -35,8 +37,8 @@ def print_console_output(all_test_points, detailed=False):
 
         if point_count > 0:
             # Show outcome distribution
-            outcomes = {}
-            states = {}
+            outcomes: Dict[str, int] = {}
+            states: Dict[str, int] = {}
             automated_count = 0
 
             for point in test_points:
@@ -84,7 +86,7 @@ def print_console_output(all_test_points, detailed=False):
     print(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 
-def save_json_output(all_test_points, plan_id):
+def save_json_output(all_test_points: Dict[int, Dict[str, Any]], plan_id: int) -> None:
     """Save results to JSON file"""
     filename = (
         f"test_points_plan_{plan_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
@@ -96,7 +98,7 @@ def save_json_output(all_test_points, plan_id):
     print(f"\n💾 Results saved to: {filename}")
 
 
-def save_csv_output(all_test_points, plan_id):
+def save_csv_output(all_test_points: Dict[int, Dict[str, Any]], plan_id: int) -> None:
     """Save results to CSV file"""
     filename = (
         f"test_points_plan_{plan_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
@@ -148,14 +150,14 @@ def save_csv_output(all_test_points, plan_id):
 
 
 def update_points_by_criteria(
-    manager,
-    plan_id,
-    suite_id=None,
-    outcome="Passed",
-    filter_criteria=None,
-    dry_run=False,
-    comment=None,
-):
+    manager: Any,
+    plan_id: int,
+    suite_id: Optional[int] = None,
+    outcome: str = "Passed",
+    filter_criteria: Optional[Dict[str, Any]] = None,
+    dry_run: bool = False,
+    comment: Optional[str] = None,
+) -> Dict[str, Any]:
     """Update test points based on criteria"""
     print(f"\n{'='*80}")
     print(f"{'DRY RUN - ' if dry_run else ''}UPDATING TEST POINTS")
@@ -175,7 +177,7 @@ def update_points_by_criteria(
         print("No test points found to update.")
         return {"total_updated": 0, "total_found": 0}
 
-    update_summary = {
+    update_summary: Dict[str, Any] = {
         "total_found": 0,
         "total_eligible": 0,
         "total_updated": 0,
@@ -280,7 +282,7 @@ def update_points_by_criteria(
     return update_summary
 
 
-def main():
+def main() -> int:
     """Main CLI function"""
     parser = argparse.ArgumentParser(
         description="Manage Azure DevOps test points with XML integration",

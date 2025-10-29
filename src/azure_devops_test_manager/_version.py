@@ -1,8 +1,9 @@
 import subprocess
 import re
+from typing import Tuple, Union
 
 
-def get_git_version():
+def get_git_version() -> Tuple[str, Tuple[Union[int, str], ...], str]:
     try:
         # Get the latest tag description from git
         version_str = (
@@ -20,7 +21,7 @@ def get_git_version():
             major, minor, patch = map(int, match.group(1).split("."))
             dev_label = f"dev{match.group(3)}" if match.group(3) else None
             commit_id = f"g{match.group(5)}"
-            version_parts = [major, minor, patch]
+            version_parts: list[Union[int, str]] = [major, minor, patch]
             if dev_label:
                 version_parts.append(dev_label)
             version_parts.append(commit_id)

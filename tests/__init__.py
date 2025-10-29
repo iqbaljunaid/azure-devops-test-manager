@@ -4,7 +4,7 @@ Tests for Azure DevOps Test Manager package.
 
 
 # Test package imports
-def test_package_imports():
+def test_package_imports() -> None:
     """Test that main package components can be imported."""
     try:
         from azure_devops_test_manager import AzureTestPointManager, cli_main
@@ -18,7 +18,7 @@ def test_package_imports():
         pass
 
 
-def test_version_available():
+def test_version_available() -> None:
     """Test that version information is available."""
     try:
         from azure_devops_test_manager import __version__

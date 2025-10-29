@@ -6,6 +6,7 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 import json
 import os
+from typing import Any, Generator
 from azure_devops_test_manager.core import (
     AzureTestPointManager,
     ConfigurationError,
@@ -24,7 +25,7 @@ class TestAzureTestPointManager:
             "AZURE_DEVOPS_PROJECT": "Test Project",
         },
     )
-    def test_initialization_with_env_vars(self):
+    def test_initialization_with_env_vars(self) -> None:
         """Test initialization with environment variables."""
         manager = AzureTestPointManager()
 
@@ -33,7 +34,7 @@ class TestAzureTestPointManager:
         assert manager.project_name == "Test Project"
         assert manager.api_version == "7.1"
 
-    def test_initialization_with_parameters(self):
+    def test_initialization_with_parameters(self) -> None:
         """Test initialization with explicit parameters."""
         manager = AzureTestPointManager(
             personal_access_token="param_token",
@@ -47,7 +48,7 @@ class TestAzureTestPointManager:
         assert manager.project_name == "Param Project"
         assert manager.api_version == "6.0"
 
-    def test_initialization_missing_token(self):
+    def test_initialization_missing_token(self) -> None:
         """Test initialization fails when PAT is missing."""
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ConfigurationError):
@@ -62,7 +63,7 @@ class TestAzureTestPointManager:
         },
     )
     @patch("azure_devops_test_manager.core.requests.get")
-    def test_get_test_suites_success(self, mock_get):
+    def test_get_test_suites_success(self, mock_get: Any) -> None:
         """Test successful retrieval of test suites."""
         # Mock response
         mock_response = Mock()
@@ -91,7 +92,7 @@ class TestAzureTestPointManager:
         },
     )
     @patch("azure_devops_test_manager.core.requests.get")
-    def test_get_test_points_success(self, mock_get):
+    def test_get_test_points_success(self, mock_get: Any) -> None:
         """Test successful retrieval of test points."""
         # Mock response
         mock_response = Mock()
@@ -125,7 +126,7 @@ class TestAzureTestPointManager:
         },
     )
     @patch("azure_devops_test_manager.core.requests.patch")
-    def test_update_test_point_outcome_success(self, mock_patch):
+    def test_update_test_point_outcome_success(self, mock_patch: Any) -> None:
         """Test successful test point outcome update."""
         # Mock response
         mock_response = Mock()
@@ -138,17 +139,22 @@ class TestAzureTestPointManager:
             12345, 67890, 101, "Passed", "Test comment"
         )
 
+        assert result is not None
         assert result["id"] == 101
         assert result["outcome"] == "Passed"
 
         # Verify the API call was made with correct parameters
         mock_patch.assert_called_once()
         call_args = mock_patch.call_args
-        assert "json" in call_args.kwargs
-        assert call_args.kwargs["json"]["outcome"] == "Passed"
-        assert call_args.kwargs["json"]["comment"] == "Test comment"
+        assert call_args is not None
+        assert call_args.kwargs is not None
+        kwargs = call_args.kwargs
+        assert "json" in kwargs
+        json_data = kwargs["json"]
+        assert json_data["outcome"] == "Passed"
+        assert json_data["comment"] == "Test comment"
 
-    def test_process_test_point(self):
+    def test_process_test_point(self) -> None:
         """Test test point processing."""
         manager = AzureTestPointManager(
             personal_access_token="test_token",
@@ -181,7 +187,7 @@ class TestAzureTestPointManager:
 class TestXMLParsing:
     """Test cases for XML parsing functionality."""
 
-    def test_parse_test_results_xml(self, tmp_path):
+    def test_parse_test_results_xml(self, tmp_path: Any) -> None:
         """Test XML test results parsing."""
         # Create a test XML file
         xml_content = """<?xml version="1.0" encoding="UTF-8"?>
@@ -227,7 +233,7 @@ class TestXMLParsing:
         assert failed_test["name"] == "test_fail"
         assert "failure_message" in failed_test
 
-    def test_parse_nonexistent_xml_file(self):
+    def test_parse_nonexistent_xml_file(self) -> None:
         """Test parsing non-existent XML file raises error."""
         manager = AzureTestPointManager(
             personal_access_token="test_token",
@@ -242,7 +248,7 @@ class TestXMLParsing:
 class TestFuzzyMatching:
     """Test cases for fuzzy matching functionality."""
 
-    def test_fuzzy_match_test_names(self):
+    def test_fuzzy_match_test_names(self) -> None:
         """Test fuzzy matching between XML tests and Azure test points."""
         manager = AzureTestPointManager(
             personal_access_token="test_token",
@@ -316,7 +322,7 @@ class TestIntegration:
     """Integration tests that require actual Azure DevOps connection."""
 
     @pytest.mark.skip(reason="Requires actual Azure DevOps credentials")
-    def test_real_azure_connection(self):
+    def test_real_azure_connection(self) -> None:
         """Test actual connection to Azure DevOps."""
         # This test would require real credentials and should be skipped by default
         pass
@@ -324,7 +330,7 @@ class TestIntegration:
 
 # Fixtures for testing
 @pytest.fixture
-def sample_xml_file(tmp_path):
+def sample_xml_file(tmp_path: Any) -> Any:
     """Create a sample XML test results file."""
     xml_content = """<?xml version="1.0" encoding="UTF-8"?>
     <testsuites>
@@ -342,7 +348,7 @@ def sample_xml_file(tmp_path):
 
 
 @pytest.fixture
-def mock_azure_manager():
+def mock_azure_manager() -> Generator[Any, None, None]:
     """Create a mock Azure Test Point Manager for testing."""
     with patch.dict(
         os.environ,
@@ -352,7 +358,7 @@ def mock_azure_manager():
             "AZURE_DEVOPS_PROJECT": "Test Project",
         },
     ):
-        return AzureTestPointManager()
+        yield AzureTestPointManager()
 
 
 # Test configuration
@@ -360,7 +366,7 @@ def mock_azure_manager():
 class TestConfiguration:
     """Test configuration and validation."""
 
-    def test_missing_configuration_raises_error(self):
+    def test_missing_configuration_raises_error(self) -> None:
         """Test that missing configuration raises appropriate error."""
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ConfigurationError) as excinfo:
@@ -368,7 +374,7 @@ class TestConfiguration:
 
             assert "AZURE_DEVOPS_PAT" in str(excinfo.value)
 
-    def test_partial_configuration_raises_error(self):
+    def test_partial_configuration_raises_error(self) -> None:
         """Test that partial configuration raises appropriate error."""
         with patch.dict(os.environ, {"AZURE_DEVOPS_PAT": "token"}, clear=True):
             # Should work with defaults

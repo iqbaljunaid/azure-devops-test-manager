@@ -9,13 +9,14 @@ from io import StringIO
 import json
 import tempfile
 import os
+from typing import Any, Generator
 
 
 class TestCLI:
     """Test cases for CLI functionality."""
 
     @patch("azure_devops_test_manager.cli.AzureTestPointManager")
-    def test_show_config_command(self, mock_manager_class):
+    def test_show_config_command(self, mock_manager_class: Any) -> None:
         """Test --show-config command."""
         # Mock manager instance
         mock_manager = Mock()
@@ -39,7 +40,7 @@ class TestCLI:
                 assert "Test Project" in config_output
 
     @patch("azure_devops_test_manager.cli.AzureTestPointManager")
-    def test_list_command_success(self, mock_manager_class):
+    def test_list_command_success(self, mock_manager_class: Any) -> None:
         """Test successful list command."""
         # Mock manager and its methods
         mock_manager = Mock()
@@ -76,7 +77,7 @@ class TestCLI:
                 )
 
     @patch("azure_devops_test_manager.cli.AzureTestPointManager")
-    def test_update_command_dry_run(self, mock_manager_class):
+    def test_update_command_dry_run(self, mock_manager_class: Any) -> None:
         """Test update command with dry run."""
         mock_manager = Mock()
         mock_manager.organization_url = "https://test.visualstudio.com"
@@ -118,7 +119,7 @@ class TestCLI:
                 output = "\n".join(print_calls)
                 assert "DRY RUN" in output
 
-    def test_missing_plan_id_error(self):
+    def test_missing_plan_id_error(self) -> None:
         """Test error when plan_id is not provided."""
         from azure_devops_test_manager.cli import main
 
@@ -133,7 +134,7 @@ class TestCLI:
                 assert "plan_id is required" in error_output
 
     @patch("azure_devops_test_manager.cli.AzureTestPointManager")
-    def test_configuration_error_handling(self, mock_manager_class):
+    def test_configuration_error_handling(self, mock_manager_class: Any) -> None:
         """Test handling of configuration errors."""
         from azure_devops_test_manager.core import ConfigurationError
         from azure_devops_test_manager.cli import main
@@ -150,7 +151,7 @@ class TestCLI:
                 assert "Configuration Error" in error_output
 
     @patch("azure_devops_test_manager.cli.AzureTestPointManager")
-    def test_xml_update_command(self, mock_manager_class):
+    def test_xml_update_command(self, mock_manager_class: Any) -> None:
         """Test XML-based update command."""
         mock_manager = Mock()
         mock_manager.organization_url = "https://test.visualstudio.com"
@@ -186,7 +187,7 @@ class TestCLI:
         finally:
             os.unlink(xml_path)
 
-    def test_help_command(self):
+    def test_help_command(self) -> None:
         """Test help command displays usage information."""
         from azure_devops_test_manager.cli import main
 
@@ -200,7 +201,7 @@ class TestCLI:
 class TestOutputFormats:
     """Test different output format functions."""
 
-    def test_print_console_output(self):
+    def test_print_console_output(self) -> None:
         """Test console output formatting."""
         from azure_devops_test_manager.cli import print_console_output
 
@@ -232,7 +233,7 @@ class TestOutputFormats:
             assert "TEST POINTS SUMMARY" in output
             assert "Test Suite" in output
 
-    def test_save_json_output(self):
+    def test_save_json_output(self) -> None:
         """Test JSON output saving."""
         from azure_devops_test_manager.cli import save_json_output
 
@@ -251,7 +252,7 @@ class TestOutputFormats:
                     mock_open.assert_called_once()
                     mock_json_dump.assert_called_once()
 
-    def test_save_csv_output(self):
+    def test_save_csv_output(self) -> None:
         """Test CSV output saving."""
         from azure_devops_test_manager.cli import save_csv_output
 
@@ -287,7 +288,7 @@ class TestOutputFormats:
 
 # Test fixtures
 @pytest.fixture
-def sample_test_points():
+def sample_test_points() -> Any:
     """Sample test points data for testing."""
     return {
         123: {
@@ -321,7 +322,7 @@ def sample_test_points():
 class TestArgumentParsing:
     """Test command line argument parsing."""
 
-    def test_basic_arguments(self):
+    def test_basic_arguments(self) -> None:
         """Test parsing of basic arguments."""
         from azure_devops_test_manager.cli import main
         import argparse
